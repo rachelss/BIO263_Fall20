@@ -1,5 +1,5 @@
 ---
-title: "BIO 263 URI Fall 2018"
+title: "BIO 263 URI Fall 2019"
 subtitle: "Ecological Data Analysis"
 author: "Instructor: Rachel Schwartz"
 output: 

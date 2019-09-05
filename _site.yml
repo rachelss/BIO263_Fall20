@@ -1,7 +1,7 @@
-name: "BIO 263 URI Fall 2018"
+name: "BIO 263 URI Fall 2019"
 output_dir: "."
 navbar:
-  title: "BIO 263 URI Fall 2018"
+  title: "BIO 263 URI Fall 2019"
   left:
     - text: "Overview"
       href: index.html
