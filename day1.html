@@ -566,11 +566,11 @@ $(document).ready(function () {
 <div id="load-the-necessary-packages" class="section level4">
 <h4>Load the necessary packages</h4>
 <p>For an explanation see Intro Tutorial step 2a.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(gsheet)</code></pre>
 </div>
 <div id="load-data-into-r" class="section level4">
 <h4>Load data into R</h4>
-<pre class="r"><code>N_excretion &lt;- read.csv(&#39;../shared/fish_nutrient_excretion_students.csv&#39;)</code></pre>
 </div>
 <div id="explore-the-data" class="section level4">
 <h4>Explore the data</h4>
@@ -582,7 +582,7 @@ $(document).ready(function () {
 <h3>Examine the frequency of fish of different sizes</h3>
 <p>Use a histogram with mass on the x axis (in ranges) and the count of each range of mass on the y axis.</p>
 <p>For help see Intro Tutorial part 4.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(Body_mass_g))+
+<pre class="r"><code>ggplot(excretion_data, aes(Body_mass_g))+
   geom_histogram()</code></pre>
 <p><strong>What can you say about the size of fish being caught?</strong></p>
 </div>
@@ -590,31 +590,31 @@ $(document).ready(function () {
 <h3>Examine the relationship between N excretion rate and body size</h3>
 <div id="plot-excretion-rates" class="section level4">
 <h4>Plot excretion rates</h4>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g,
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g,
                     y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point()</code></pre>
 <p><strong>Can you see the variation in rate among samples of a given body size?</strong> Try looking at N excretion for all fish of 50g. What are the smallest and largest excretion rates?</p>
 <p>Fix the axis labels by adding layers to your plot (see Intro Tutorial part 5a). Make sure to think about whether your variables are discrete or continuous.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point() +
   scale_x_continuous(name = &quot;Body Mass (g)&quot;) +
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;)</code></pre>
 <p>Add a trend line using <code>geom_smooth()</code>.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point()+
   scale_x_continuous(name = &quot;Body Mass (g)&quot;) +
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
   geom_smooth()</code></pre>
 <p>We know temperature has an effect so let’s color our points by temperature. Plot N excretion rate and a function of mass separately for each temperature by adding <code>color=Temperature_C</code> in your <code>aes()</code> function for <code>geom_point</code>.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point(aes(color=Temperature_C))+
   scale_x_continuous(name = &quot;Body Mass (g)&quot;)+
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
   geom_smooth()</code></pre>
 <p>Oops…R sees temperature as a continuous variable, but we’re thinking about different temperatures as different categories. Let’s tell R this. <em>Note that your need to specify that <code>Temperature_C</code> is a factor (i.e. discrete) and not a continuous variable in order to create separate plots for each temperature.</em></p>
-<pre class="r"><code>N_excretion$Temperature_C &lt;- as.factor(N_excretion$Temperature_C)
+<pre class="r"><code>excretion_data$Temperature_C &lt;- as.factor(excretion_data$Temperature_C)
 
-ggplot(N_excretion, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
+ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point(aes(color=Temperature_C))+
   scale_x_continuous(name = &quot;Body Mass (g)&quot;)+
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
