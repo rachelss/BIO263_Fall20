@@ -571,6 +571,8 @@ library(gsheet)</code></pre>
 </div>
 <div id="load-data-into-r" class="section level4">
 <h4>Load data into R</h4>
+<pre class="r"><code>url &lt;- &#39;https://docs.google.com/spreadsheets/d/1Mg5ZjVHDBOu07CBrrjIXqMrL13mM0rB4BqoOA4SAUy8&#39;
+excretion_data &lt;- gsheet2tbl(url)</code></pre>
 </div>
 <div id="explore-the-data" class="section level4">
 <h4>Explore the data</h4>
@@ -620,6 +622,7 @@ ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfi
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
   geom_smooth()</code></pre>
 <p><strong>Describe how excretion rates vary with temperature.</strong></p>
+<p>There are a lot of ways to visualize your data. Some of your plots will communicate your results more clearly than others. Check out <a href="https://serialmentor.com/dataviz/directory-of-visualizations.html" class="uri">https://serialmentor.com/dataviz/directory-of-visualizations.html</a> for some help with the types of visualizations you might use.</p>
 </div>
 <div id="log-scale-the-plot" class="section level4">
 <h4>Log scale the plot</h4>
