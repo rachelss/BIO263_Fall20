@@ -622,7 +622,7 @@ ggplot(excretion_data, aes(x=Body_mass_g, y=Per_capita_N_excretion_rate_umol_Nfi
   scale_y_continuous(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
   geom_smooth()</code></pre>
 <p><strong>Describe how excretion rates vary with temperature.</strong></p>
-<p>There are a lot of ways to visualize your data. Some of your plots will communicate your results more clearly than others. Check out <a href="https://serialmentor.com/dataviz/directory-of-visualizations.html" class="uri">https://serialmentor.com/dataviz/directory-of-visualizations.html</a> for some help with the types of visualizations you might use.</p>
+<p>There are a lot of ways to visualize your data. Some of your plots will communicate your results more clearly than others. Check out <a href="https://serialmentor.com/dataviz/directory-of-visualizations.html" class="uri">https://serialmentor.com/dataviz/directory-of-visualizations.html</a> for some help with the types of visualizations you might use. Also, read chapter 2 of your textbook.</p>
 </div>
 <div id="log-scale-the-plot" class="section level4">
 <h4>Log scale the plot</h4>
@@ -647,7 +647,7 @@ log B = log B_0 + 0.75 log M
   scale_x_log10(name = &quot;Body Mass (g)&quot;)+
   scale_y_log10(name = &quot;N excretion rate (umol N / fish / h)&quot;) +
   geom_smooth(method=&quot;lm&quot;)</code></pre>
-<p>The line on your plot represents a linear regression. The slope of the regression line is of great interest because MTE predicts a slope of 0.75 for the log body mass vs. log excretion rate relationship, whereas our alternative hypothesis predicts a slope of 1.</p>
+<p>The line on your plot represents a linear regression. Remember that a line has a slope and an intercept following the equation <span class="math inline">\(y = mx + b\)</span>. The slope of the regression line is of great interest because MTE predicts a slope of 0.75 for the log body mass vs. log excretion rate relationship, whereas our alternative hypothesis predicts a slope of 1.</p>
 <p>Down below we will examine the estimated slope of the line to determine whether our data rejects our null hypothesis.</p>
 <p>Save your plot (see Intro Tutorial part 5b).</p>
 </div>
@@ -667,63 +667,68 @@ log B = log B_0 + 0.75 log M
 </div>
 <div id="statistics" class="section level4">
 <h4>Statistics</h4>
-<p>The lines on your plot represent a linear regression, which allow you to estimate the slope (and intercept) of the line.</p>
-<p>In the <code>lm</code> command you should enter your dependent variable <em>as a function of</em> your independent variable using the <em>~</em>.</p>
-<p>First we will do this calculate for all the data just to show you how to calculate a linear regression in a simple way <em>even though we know that temperature impacts N excretion</em>. Using all the data in one model, instead of modeling temperatures separately, means we’ll have a lot more variation and may not get the answer we expect.</p>
-<pre class="r"><code>#calculate log of all N excretion data
-log_Nexcretion &lt;- log10(N_excretion$Per_capita_N_excretion_rate_umol_Nfishhour)
+<p>The lines on your plot represent a linear regression (“lm” stands for linear model), which allow you to estimate the slope (and intercept) of the line. You can use the <code>lm</code> function to get some details about this line.</p>
+<p>In the <code>lm</code> function you should enter your dependent variable <em>as a function of</em> your independent variable using the <em>~</em>.</p>
+<p>First we will do this calculation for all the data just to show you how to calculate a linear regression in a simple way <em>even though we know that temperature impacts N excretion</em>. Using all the data in one model, instead of modeling temperatures separately, means we’ll have a lot more variation and may not get the answer we expect.</p>
+<pre class="r"><code>#calculate log of all N excretion data and add that to your dataframe
+excretion_data$Log_Per_capita_N_excretion_rate_umol_Nfishhour &lt;- log10(excretion_data$Per_capita_N_excretion_rate_umol_Nfishhour)
 #calculate log of all mass
-log_mass &lt;- log10(N_excretion$Body_mass_g)
+excretion_data$Log_Body_mass_g &lt;- log10(excretion_data$Body_mass_g)
 #linear regression with logN as a function of log_mass - store as variable
-N_lm &lt;- lm(log_Nexcretion ~ log_mass)
-#print info in linear regression variable
-summary(N_lm) </code></pre>
-<p>Check the coefficients (in the middle of the output of the summary of the model). Is the estimate of the coefficient (i.e. the slope) for log_mass what you expect? <em>Hint: think about your null hypothesis - what relationship do you expect from equation 2? what is the coefficient in the equation?</em></p>
+N_lm &lt;- lm(Log_Per_capita_N_excretion_rate_umol_Nfishhour ~ Log_Body_mass_g, data = excretion_data)</code></pre>
+<p>To get nice tables of our linear model results we need to use the <code>moderndive</code> package, which simplifies some functions for basic statistics.</p>
+<p>Now take a look at a summary table of all the the output of your linear model</p>
+<pre class="r"><code>get_regression_table(N_lm)</code></pre>
+<p>Take a look at the row for the term <code>Log_Body_mass_g</code> to understand the relationship between the change <code>Log_Body_mass_g</code> and the change in <code>Log_Per_capita_N_excretion_rate_umol_Nfishhour</code>. The <code>estimate</code> is the slope of the line, which is what you wanted to calculate.</p>
+<p>The remaining columns in the output table are the “standard error”, “test statistic”, “p-value”, “lower 95% confidence interval bound”, and “upper 95% confidence interval bound.” They tell us about both the statistical significance and practical significance of our results. You can think of this loosely as the “meaningfulness” of our results from a statistical perspective. The standard error tells you how accurate your estimate is likely to be. The p-value is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis is true. You can think of it as how surprised you are that you obtained this value if you thought there was no relationship. As your sample size goes up, the error of your estimate will go down. The 95% confidence interval is the range of plausible values for your estimate. There’s a lot more to learn about these concepts and I urge you to explore them in a statistics class. In the mean time check out the ebook <a href="https://moderndive.com/" class="uri">https://moderndive.com/</a> .</p>
+<p>Now that you know what information you have, check the values. <strong>Is the <code>estimate</code> (i.e. the slope) for <code>Log_Body_mass_g</code> what you expect? </strong> <em>Hint: think about your null hypothesis - what relationship do you expect from equation 2? what is the coefficient in the equation?</em> <strong>Does the expected value fall within the confidence interval?</strong></p>
+</div>
+</div>
+</div>
+<div id="how-well-does-the-model-fit-the-data" class="section level2">
+<h2>How well does the model fit the data?</h2>
+<p>Also stored in your linear regression variable is information about the strength of the association between the two variables. You can think of this as how close or far the data are from the line, or how much the explantory variable predicts the response variable, and to what extent other factors influence the response variable. We refer to this as the <span class="math inline">\(R^2\)</span> value (it’s squared because when you add the distance of the points to the line squaring them avoids negative numbers). A <span class="math inline">\(R^2\)</span> value close to 1 indicates and strong relationship whereas a value close to 0 indicates no relationship.</p>
+<pre class="r"><code>get_regression_summaries(N_lm)</code></pre>
 <p><strong>Now calculate the model separately for different temperatures</strong></p>
 <p>We know temperature affects metabolic rates so we can estimate the model separately for each temperature. Think of each temperature as a separate sample with a separate estimate. First let’s calculate the regression model for excretion at 20.1 C.</p>
-<pre class="r"><code>temp20 &lt;- filter(N_excretion, Temperature_C == 20.1)
-log_temp_20_N &lt;- log10(temp20$Per_capita_N_excretion_rate_umol_Nfishhour)
-log_temp_20_mass &lt;- log10(temp20$Body_mass_g)
-N_lm20 &lt;- lm(log_temp_20_N ~ log_temp_20_mass)
-summary(N_lm20) </code></pre>
-<p><strong>What is the coefficient of the linear model?</strong></p>
-<p>Think of each temperature as one estimate of the slope. This allows you to have multiple samples. Calculate the regression models for all the temperatures separately.</p>
-<p>We will use the <code>tidy</code> function in the <code>broom</code> library to access the important information in each model. We can then put all the rows of data together using <code>rbind</code>. Below is an example with <strong>some</strong> of the data.</p>
-<pre class="r"><code>library(broom)
-
-#note you just get the 2nd row of the tidied data
-#as with the summary of the model, the second row contains the results
-#related to log_mass
-tidy_N_lm20 &lt;- tidy(N_lm20)[2,]
-
-#calculate the regression for temp = 21
-temp21 &lt;- filter(N_excretion, Temperature_C == 21)
-N_lm21 &lt;- lm(log10(temp21$Per_capita_N_excretion_rate_umol_Nfishhour) ~ 
-               log10(temp21$Body_mass_g))
-#get the coefficients of the model for 21
-tidy_N_lm21 &lt;- tidy(N_lm21)[2,]
+<pre class="r"><code>temp20 &lt;- filter(excretion_data, Temperature_C == 20.1)
+N_lm20 &lt;- lm(Log_Per_capita_N_excretion_rate_umol_Nfishhour ~ Log_Body_mass_g, data = temp20)
+N_lm20_table &lt;- get_regression_table(N_lm20)
+N_lm20_table
+get_regression_summaries(N_lm20)</code></pre>
+<p><strong>Answer the same questions about this model.</strong></p>
+<p>Think of each temperature as one estimate of the slope. This allows you to have multiple samples where you use different fish to get a good estimate of that sample.</p>
+<p><strong>Calculate the regression models for all the temperatures separately.</strong></p>
+<p>Do the separate estimates of the slope fit the theory?</p>
+<p>We can “stack” all of the data frames into one using the <code>rbind</code> function (for row binding). Then we’ll filter for the data we’re interested in (i.e. not the intercept). Below is an example with <strong>some</strong> of the data.</p>
+<pre class="r"><code>#calculate the regression for temp = 17
+temp17 &lt;- filter(excretion_data, Temperature_C == 17)
+N_lm17 &lt;- lm(Log_Per_capita_N_excretion_rate_umol_Nfishhour ~ Log_Body_mass_g, data = temp17)
+N_lm17_table &lt;- get_regression_table(N_lm17)
 
 #make one data table with all data - you should include all models
 #calculated for individual temperatures
-model &lt;- rbind(tidy_N_lm20,tidy_N_lm21)</code></pre>
+model_outputs &lt;- rbind(N_lm17_table,N_lm20_table)
+model_outputs_slope &lt;- filter(model_outputs,term == &#39;Log_Body_mass_g&#39;)</code></pre>
+<pre class="r"><code>#add temp
+model_outputs_slope$temp &lt;- unique(excretion_data$Temperature_C)</code></pre>
 <p>In some cases you might not have enough data to estimate the slope of the line very well. In these cases you can examine whether the slope is significantly from 0 and remove any non-significant results.</p>
 <p>Calculate the mean slope among your samples. <strong>Note how many samples you have.</strong></p>
 <pre class="r"><code>#filter out data where slope is not significantly different than 0
-model_filtered &lt;-  filter(model, p.value &lt; 0.05)
+model_filtered &lt;-  filter(model_outputs_slope, p_value &lt; 0.05)
 corrN &lt;- mean(model_filtered$estimate)
 corrN</code></pre>
-<p>The 95% confidence interval around your mean slope is <span class="math inline">\(mean\pm2SE\)</span>.</p>
-<pre class="r"><code>#computation of the standard error of the mean
-sem&lt;-sd(model_filtered$estimate)/sqrt(length(model_filtered$estimate))
+<p>The 95% confidence interval around your mean slope is approximately <span class="math inline">\(mean\pm2SE\)</span>.</p>
+<pre class="r"><code>library(plotrix)
+#computation of the standard error of the mean
+slopes_error &lt;- std.error(model_outputs_slope$estimate)
 #95% confidence intervals of the mean
 #lower bound
-corrN-2*sem
+corrN-2*slopes_error
 #upper bound
-corrN+2*sem</code></pre>
+corrN+2*slopes_error</code></pre>
 <p><strong>What do the mean and confidence interval of your slopes tell you about your hypothesis?</strong></p>
 <p>Are the slopes near 0.75, as predicted by MTE? Or are they closer to 1, as predicted by the alternative hypotheses?</p>
-</div>
-</div>
 <div id="examine-the-relationship-between-p-excretion-rate-and-temperature" class="section level3">
 <h3>Examine the relationship between P excretion rate and temperature</h3>
 <p>Repeat the work above for phosphorus excretion.</p>
