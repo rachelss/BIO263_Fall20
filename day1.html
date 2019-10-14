@@ -641,7 +641,7 @@ log B = log B_0 + 0.75 log M
 <p>Change the axis scales to log scale by replacing <code>scale_x_continuous</code> and <code>scale_y_continuous</code> with <code>scale_x_log10</code> and <code>scale_y_log10</code>.</p>
 <p>Once you’ve made these log plots, you can analyze them using linear regression. Linear regression is a technique whereby a straight line is “fit” to the data. Linear regression can be used to determine whether the two variables are associated, and the strength of the association. For example, suppose the plot suggests that the two variables are associated, but there is “scatter” among the data, i.e., the points do not all fit along a straight line. Linear regression produces the straight line that best fits the data (basically, it produces the line that minimizes the cumulative distances between the data points and the line itself).</p>
 <p>Change the best-fit trend line to be straight by specifying <code>method=&quot;lm&quot;</code> in the <code>geom_smooth</code> function.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g, 
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g, 
                     y=Per_capita_N_excretion_rate_umol_Nfishhour)) +
   geom_point()+
   scale_x_log10(name = &quot;Body Mass (g)&quot;)+
@@ -654,7 +654,7 @@ log B = log B_0 + 0.75 log M
 <div id="create-separate-plots-for-each-temperature" class="section level4">
 <h4>Create separate plots for each temperature</h4>
 <p>We expect metabolic rate to depend on both mass and temperature. Plot N excretion rate as a function of mass separately for each temperature by adding <code>color=Temperature_C</code> in your <code>aes()</code> function.</p>
-<pre class="r"><code>ggplot(N_excretion, aes(x=Body_mass_g, 
+<pre class="r"><code>ggplot(excretion_data, aes(x=Body_mass_g, 
                       y=Per_capita_N_excretion_rate_umol_Nfishhour,
                       color=Temperature_C)) +
   geom_point()+
@@ -677,6 +677,7 @@ excretion_data$Log_Body_mass_g &lt;- log10(excretion_data$Body_mass_g)
 #linear regression with logN as a function of log_mass - store as variable
 N_lm &lt;- lm(Log_Per_capita_N_excretion_rate_umol_Nfishhour ~ Log_Body_mass_g, data = excretion_data)</code></pre>
 <p>To get nice tables of our linear model results we need to use the <code>moderndive</code> package, which simplifies some functions for basic statistics.</p>
+<p><strong>Load the library</strong></p>
 <p>Now take a look at a summary table of all the the output of your linear model</p>
 <pre class="r"><code>get_regression_table(N_lm)</code></pre>
 <p>Take a look at the row for the term <code>Log_Body_mass_g</code> to understand the relationship between the change <code>Log_Body_mass_g</code> and the change in <code>Log_Per_capita_N_excretion_rate_umol_Nfishhour</code>. The <code>estimate</code> is the slope of the line, which is what you wanted to calculate.</p>
