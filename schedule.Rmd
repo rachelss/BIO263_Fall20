@@ -26,9 +26,18 @@ Topic <- c("Intro","Sampling", "Variation, Graphing", "Models", "Writeup",
            "Wrapup")
 Data <- c(rep("Fish metabolism", 5), rep("Kelp Populations", 4),
           rep("Aquatic invasives", 3), rep("Grassland productivity", 1))
-Reading <- c("", "Handout through Data, p. 1-16", "p. 23-43, repeat analysis for P", "p. 539-547", "https://tinyurl.com/fig-capt, p. 149-167", 
-             "p. 43-46", "p. 65-73, 96-107", "p. 73-80, 338-340", "p. 176-177",
-             "p. 423-445", "p. 459-473", "p. 115-116", 
+Reading <- c("", 
+             "Handout through Data, p. 1-16", 
+             "p. 23-43, repeat analysis for P", 
+             "p. 539-547", 
+             "https://tinyurl.com/fig-capt, p. 149-167, p. 102-104", 
+             "Handout through Data, p. 43-46", 
+             "p. 65-73, 96-107", 
+             "p. 73-80, 338-340", 
+             "p. 176-177",
+             "p. 423-445", 
+             "p. 459-473", 
+             "p. 115-116", 
              "p. 503-512, 201-202")
  
 meetings <- cbind(Week, Ecology, Topic, Data, Reading)
