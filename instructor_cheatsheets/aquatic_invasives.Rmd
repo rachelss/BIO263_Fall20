@@ -4,8 +4,8 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-#knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, results= 'hide',  fig.show = 'hide' )
+#knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, results= 'hide',  fig.show = 'hide' )
 ```
 
 Adapted and excerpted from 
@@ -103,26 +103,62 @@ Now create a plot to examine the question.
 
 ```{r plot1}
 ggplot(amphib_survival2, aes(Treatment,No_of_Survivors, color=Species))+
-  geom_violin()+
+  geom_boxplot()+
   theme(axis.text.x=element_text(angle = 45, hjust = 1))+
   ylab("# of survivors")
 #mosquitofish strongly reduced treefrog and newt survival
 #toads are highly toxic and distasteful as larvae
 ```
 
-To compare the means of more than two groups (i.e. the three treatments here compared to the control) we use an ANOVA.
-Note that we use the simplest form of ANOVA here (1-way) even though this a factorial design (i.e. two interacting factors: bullfrogs, mosquitofish, and both). This approach is not correct but used here for simplicity. Additionally, survivors of all species are treated equally even though we observe in the graph that the treatment effect varied with species.
+**How would you answer the question?**
 
-(1) Construct the linear model relating the number of survivors to the treatment.
-(2) Output the ANOVA table.
-(3) Output the R^2 value from the summary of the linear model. R^2 indicates the fraction of variation in the response variable "explained" by treatment.
+To compare the means of more than two groups (i.e. the three treatments here compared to the control) we use an Analysis of Variance (ANOVA).
+Note that because this experiment follows a factorial design (i.e. two interacting factors: bullfrogs, mosquitofish, and both), we not only need to look at the impacts of the individual factors, but their interaction. Because of this interaction we will change our data table a bit so that each row is coded for whether bullfrogs are present or absent, and whether mosquitofish are present or absent.
+
+```{r modata, echo = TRUE}
+treatments2 <- read.csv("treatments2.csv")
+amphib_survival3 <- left_join(amphib_survival,treatments2)
+```
+
+Now you can construct the linear model relating the number of survivors to the treatment,
+and output the ANOVA table. Note that this looks similar to the linear regression we conducted earlier in the semester, but for this analysis we have multiple categorical explanatory variables (the * in the arguments allow for the interaction term).
 
 ```{r lm, echo = TRUE}
-survivalAnova <- lm(No_of_Survivors ~ Treatment, data = amphib_survival2)
-anova(survivalAnova)
-survivalAnovaSummary <- summary(survivalAnova)
-survivalAnovaSummary$r.squared
+lm_survivors <- lm(No_of_Survivors ~ Bullfrog * Mosquitofish, data = amphib_survival3)
+anova(lm_survivors)
 ```
+
+Look at the column `Pr(>F)`. This is the p-value, which is the probability that the observed F value
+(the ratio of the group mean square and the error mean squre) would have occured by chance if the null
+hypothesis (the means for all treatments are equal) was true.
+
+**Which explanatory variable(s) impact the number of survivors?** Is this consistent with your plot?
+
+Now output the R^2 value from the summary of the linear model. R^2 is the contribution of the differences among groups to the total variation in the data.
+
+```{r lm2, echo = TRUE}
+summary(lm_survivors)
+```
+
+Note: The adjusted R-squared is a modified version of R-squared that has been adjusted for the number of predictors in the model. The adjusted R-squared increases only if the new term improves the model more than would be expected by chance. It decreases when a predictor improves the model by less than expected by chance.
+
+Note that in this analysis we have treated survivors of all species equally even though we observe in the graph that the treatment effect varied with species. Repeat the analysis for each species separately.
+
+```{r lm3}
+lm_survivors_BUBO <- lm(No_of_Survivors ~ Bullfrog * Mosquitofish, 
+                        data = filter(amphib_survival3, Species == "BUBO"))
+anova(lm_survivors_BUBO)
+lm_survivors_TATO <- lm(No_of_Survivors ~ Bullfrog * Mosquitofish, 
+                        data = filter(amphib_survival3, Species == "TATO"))
+anova(lm_survivors_TATO)
+summary(lm_survivors_TATO)
+lm_survivors_PSRE <- lm(No_of_Survivors ~ Bullfrog * Mosquitofish, 
+                        data = filter(amphib_survival3, Species == "PSRE"))
+anova(lm_survivors_PSRE)
+summary(lm_survivors_PSRE)
+```
+
+**Are there differences in impacts on different species?**
 
 ### How does the presence of bullfrogs and mosquitofish influence the mass (an indicator of amphibian growth) of the native amphibians that survived? 
 
@@ -130,7 +166,8 @@ Multiple measurements within a mesocosm (e.g. amphibian mass) are not independen
 Calculate the mean value per mesocosm and use this as the response variable. Hint: you'll need to make a new table.
 
 ```{r mass}
-amphib_mean_mass <- group_by(amphib_mass, Tank, Species) %>% summarise(mean_mass = mean(Mass))
+amphib_mean_mass <- group_by(amphib_mass, Tank, Species) %>% 
+  summarise(mean_mass = mean(Mass))
 ``` 
 
 Add the treatment information to the new table.
@@ -138,33 +175,54 @@ Add the treatment information to the new table.
 ```{r join2}
 
 amphib_mean_mass2 <- left_join(amphib_mean_mass,treatments)
+amphib_mean_mass3 <- left_join(amphib_mean_mass,treatments2)
 ```
 
 Answer the question using a plot and ANOVA.
 
 ```{r plot2}
 ggplot(amphib_mean_mass2, aes(Species,mean_mass,color=Treatment )) + 
-  geom_violin()+ geom_point(alpha=.4,position=position_jitterdodge())+
+  geom_boxplot()+ geom_point(alpha=.4,position=position_jitterdodge())+
   theme(axis.text.x=element_text(angle = 45, hjust = 1))+ylab("mean mass (g)")+ 
   scale_x_discrete(labels=c("Toads", "Treefrogs", "Newts"))
-#BUBO
-#Toads compete with bullfrogs for resources (algae), so the presence of bullfrogs reduced their growth rates. 
-#mosquitofish slightly increased toad growth rates because mosquitofish preyed on treefrogs, thereby reducing competition between treefrogs and toads 
-#PSRE
-#Treefrogs compete with bullfrogs for algae, but they are also preyed upon heavily by mosquitofish (have to hide; reduce foraging)
-#TATO
-#newts are carnivores so they do not compete with the bullfrogs 
-#newts that survive with mosquitofish were smaller because they also had to spend less time foraging to avoid predation
 
-massAnova <- lm(mean_mass ~ Treatment, data = amphib_mean_mass2)
-anova(massAnova)
-massAnovaSummary <- summary(massAnova)
-massAnovaSummary$r.squared
+#BUBO
+# Toads compete with bullfrogs for resources (algae), so the presence of bullfrogs 
+# reduced their growth rates. 
+#PSRE
+# Treefrogs compete with bullfrogs for algae, so the presence of bullfrogs 
+# reduced their growth rates. They are also preyed upon by mosquitofish,
+# so the ones that survive have spent more time hiding and less time foraging.
+#TATO
+# Newts are carnivores so they do not compete with the bullfrogs.
+# Newts that survive with mosquitofish were smaller because they also had to spend 
+# less time foraging to avoid predation.
+```
+
+```{r lm_mass}
+lm_mass <- lm(mean_mass ~ Bullfrog * Mosquitofish, data = amphib_mean_mass3)
+anova(lm_mass)
+summary(lm_mass)
+
+lm_TATOmass <- lm(mean_mass ~ Bullfrog * Mosquitofish, 
+                       data = filter(amphib_mean_mass3,Species=="TATO"))
+anova(lm_TATOmass)
+lm_PSREmass <- lm(mean_mass ~ Bullfrog * Mosquitofish, 
+                       data = filter(amphib_mean_mass3,Species=="PSRE"))
+anova(lm_PSREmass)
+lm_BUBOmass <- lm(mean_mass ~ Bullfrog * Mosquitofish, 
+                       data = filter(amphib_mean_mass3,Species=="BUBO"))
+anova(lm_BUBOmass)
 ```
 
 ### How does the presence of bullfrogs and mosquitofish influence the density of zooplankton (Daphnia and copepods)?
-```{r}
-zoopl <- snails_and_zoopl %>% filter(Species != "Snails") %>% group_by(Tank) %>% 
+
+*Don't forget to calculate density from counts.*
+
+```{r zoopl}
+zoopl <- snails_and_zoopl %>% 
+  filter(Species != "Snails") %>% 
+  group_by(Tank) %>% 
   summarize(zooplankton = sum(No_of_Individuals))
 zoopl2 <- left_join(zoopl,treatments)
 zoopl2$zooplankton_density <- zoopl2$zooplankton / 6.9
@@ -172,22 +230,32 @@ ggplot(zoopl2, aes(Treatment,zooplankton_density)) +
   geom_boxplot()+
   theme(axis.text.x=element_text(angle = 45, hjust = 1))
 
+zoopl3 <- left_join(zoopl2,treatments2)
+lm_zoopl <- lm(zooplankton_density ~ Bullfrog * Mosquitofish, data = zoopl3)
+anova(lm_zoopl)
+summary(lm_zoopl)
+
 ```
 
 ### How does the presence of bullfrogs and mosquitofish influence the density of phytoplankton (i.e. relative phytoplankton fluorescence)?
-```{r}
+```{r phyto}
 phytoplankton2 <- group_by(phytoplankton, Tank) %>% 
   summarise(Fluorescence = mean(Phytoplankton_Fluorescence))
 phytoplankton3 <- left_join(phytoplankton2,treatments)
 ggplot(phytoplankton3, aes(Treatment,Fluorescence)) + 
-  geom_violin()+
+  geom_boxplot()+
   theme(axis.text.x=element_text(angle = 45, hjust = 1))
 #grazing by zooplankton controlled the abundance of phytoplankton in the mesocosms
 #mosquitofish impact zooplankton
+
+phytoplankton4 <- left_join(phytoplankton3,treatments2)
+lm_phyto <- lm(Fluorescence ~ Bullfrog * Mosquitofish, data = phytoplankton4)
+anova(lm_phyto)
+summary(lm_phyto)
 ```
 
 ### How does the presence of bullfrogs and mosquitofish influence the density of snails?
-```{r}
+```{r snails}
 snails <- snails_and_zoopl %>% filter(Species == "Snails") 
 snails2 <- left_join(snails,treatments)
 ggplot(snails2, aes(Treatment,No_of_Individuals)) + 
@@ -195,6 +263,11 @@ ggplot(snails2, aes(Treatment,No_of_Individuals)) +
   theme(axis.text.x=element_text(angle = 45, hjust = 1))
 #change in snail density is likely due to competition from bullfrogs. 
 #Snails had less to eat in the presence of bullfrogs and therefore produced fewer offspring. 
+
+snails2 <- left_join(snails2,treatments2)
+lm_snail <- lm(No_of_Individuals ~ Bullfrog * Mosquitofish, data = snails2)
+anova(lm_snail)
+summary(lm_snail)
 ```
 
 ### Redraw the food web to show bullfrogs and mosquitofish, and their direct and indirect effects.
