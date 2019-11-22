@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -1360,7 +1361,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1521,48 +1521,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1576,6 +1537,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -1691,11 +1658,13 @@ div.tocify {
 <a href="https://docs.google.com/presentation/d/1NxV4tijdF7ork-cDcPO0l1yH9kHa0l_SDL7GeA3YZiA/edit?usp=sharing">Day 3 Slides</a><br />
 <a href="https://docs.google.com/presentation/d/1qQo-iOuk-hnzJy8VavT7FbaqnqVOI30sbvMLVwEBYxY/edit?usp=sharing">Day 4 Slides</a><br />
 <a href="https://docs.google.com/presentation/d/1dLXkp3-ZmUYlj9-4CJNJuo7H50KxV59fcOV9cWuCIDM/edit?usp=sharing">Day 6 Slides</a><br />
-<a href="https://docs.google.com/presentation/d/1mN3DJQGblSwa5zBeh3zWd6slAuEpbrCcyIloznV0E0k/edit?usp=sharing">Day 9 Slides</a></p>
+<a href="https://docs.google.com/presentation/d/1mN3DJQGblSwa5zBeh3zWd6slAuEpbrCcyIloznV0E0k/edit?usp=sharing">Day 9 Slides</a><br />
+<a href="https://docs.google.com/presentation/d/1P5VuT-YuroLoD8-GM8RLJT2TWukpg9lmOE1LRCm8MSw/edit?usp=sharing">Day 10 Slides</a></p>
 <p><a href="day1.html">Exercise 1</a><br />
 <a href="https://tinyurl.com/yc72k45p">Exercise 1 data</a></p>
 <p><a href="day2.html">Exercise 2</a><br />
 <a href="http://abacus.bates.edu/~ganderso/biology/resources/writing/HTWtablefigs.html#legends">Writing guidance</a></p>
+<p><a href="day3.html">Exercise 3</a></p>
 
 
 
@@ -1715,6 +1684,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
