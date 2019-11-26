@@ -22,7 +22,7 @@ Ecology <- c(rep("Physical Environment", 5),
              rep("Ecosystem Ecology",1))
 Topic <- c("Intro","Sampling", "Variation, Graphing", "Models", "Writeup",
            "Variation, Graphing", "Statistics", "Models", "Writeup",
-           "Experimental design", "ANOVA", "Models",
+           "Experimental design", "ANOVA", "Writeup",
            "Wrapup")
 Data <- c(rep("Fish metabolism", 5), rep("Kelp Populations", 4),
           rep("Aquatic invasives", 3), rep("Grassland productivity", 1))
