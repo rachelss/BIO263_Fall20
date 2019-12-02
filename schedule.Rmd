@@ -37,7 +37,7 @@ Reading <- c("",
              "p. 176-177",
              "p. 423-445", 
              "p. 459-473", 
-             "p. 115-116", 
+             "p. 115-116, 605-618", 
              "p. 503-512, 201-202")
  
 meetings <- cbind(Week, Ecology, Topic, Data, Reading)
