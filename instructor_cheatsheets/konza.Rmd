@@ -1,7 +1,6 @@
 ---
 title: "Comparing the Influence of Precipitation, Fire, and Topography on Plant Productivity in the Tallgrass Prairie"
 author: "Rachel Schwartz"
-date: "December 3, 2018"
 output: pdf_document
 ---
 
@@ -92,10 +91,13 @@ These data are based on analyses and measurements conducted between 1984 and 199
 
 ## Data analysis
 
-### Load library
+### Make a new project and new script
 
-```{r l, echo=FALSE}
+### Load the tidyverse and moderndive libraries
+
+```{r l}
 library(tidyverse)
+library(moderndive)
 ```
 
 ### Load data and view it
@@ -103,7 +105,7 @@ The data can be found at the following paths relative to your home folder:
 "../shared/konza.csv"  
 "../shared/konza_precip.csv"
 
-```{r load, echo=FALSE}
+```{r load}
 konza <- read.csv("konza.csv")
 rain <- read.csv("konza_precip.csv")
 ```
@@ -155,6 +157,8 @@ ggplot(total_prod3, aes(x=Burned, y=prod)) +
   geom_point() + ylim(c(0,500))
 ```
 
+**Does productivity appear different for the different treatments?**
+
 Use an ANOVA to determine whether the three treatments are statistically different. Make sure to use the table with samples not your calculated means.
 
 ```{r}
@@ -163,7 +167,11 @@ anova(prodAnova)
 summary(prodAnova)$r.squared
 ```
 
-The treatments are statistically different but burning doesn't explain a lot of the variation among sites. Take a look at the overall variation with a boxplot (use your total productivity table with samples and not mean/se information). 
+**Is productivity statistically different for the different treatments?**
+
+**How much of the variation in productivity is explained by burning?**
+
+Take a look at this variation with a boxplot (use your total productivity table with samples and not mean/se information). 
 
 ```{r}
 ggplot(total_prod, aes(x=Burned, y=total_prod))+geom_boxplot()
@@ -172,6 +180,7 @@ ggplot(total_prod, aes(x=Burned, y=total_prod))+geom_boxplot()
 Does the pattern you see hold for both forbs and grasses separately? 
 You'll need an additional summary table similar to the one above, but with separate
 rows by type generated from the original data.
+Make another mean/se plot but with the forbs and grasses plotted separately.
 
 ```{r}
 #but differs for grass/forb
@@ -182,6 +191,8 @@ ggplot(total_prod2, aes(x=Burned, y=prod, color=Type)) +
   geom_errorbar(aes(ymin=prod-se_prod, ymax=prod+se_prod)) +
   geom_point() + ylim(c(0,500))
 ```
+
+**Does burning impact the productivity of grasses and forbs differently?**
 
 To test for the significance of both burn treatment and plant type on productivity 
 use a two-way ANOVA with interaction effect. Replace
@@ -194,9 +205,13 @@ anova(prodAnova)
 summary(prodAnova)$r.squared
 ```
 
+**Do burning, vegetation type, and/or their interaction affect productivity?**
+
+**How much of the variation in productivity is explained by the combination of burning, vegetation type, and their interaction?**
+
 ### Impacts of precipitation
 
-What is the relationship between total annual precipitation (mm) and NPP for all sites on Konza Prairie? Use both a plot and linear model.
+What is the relationship between total annual precipitation (mm) and NPP for all sites on Konza Prairie? Use both a plot (with a regression line) and linear model.
 
 ```{r}
 
@@ -204,20 +219,31 @@ total_prod_rain <- left_join(total_prod,rain)
 ggplot(total_prod_rain, aes(Precip.g.season,total_prod)) + 
   geom_point() + geom_smooth(method="lm")
 
-summary(lm(total_prod ~ Precip.g.season, data = total_prod_rain))
+precip_prod_lm <- lm(total_prod ~ Precip.g.season, data = total_prod_rain)
+get_regression_table(precip_prod_lm)
+summary(precip_prod_lm)$r.squared
 ```
 
-Because there's a lot of variation for any value of precipitation you can examine the effects of location and burn treatment using color and facets.
+**Does precipitation affect productivity?**
+
+**How much of the variation in productivity is explained by precipitation?**
+
+Because there's a lot of variation for any value of precipitation you can examine the effects of location and burn treatment using color and facets respectively. Include regression lines.
 
 ```{r }
 ggplot(total_prod_rain, aes(Precip.g.season,total_prod,color=Location)) + 
   geom_point() + facet_grid(~Burned) + geom_smooth(method="lm")
 ```
 
-Use a regression to examine the relationships you see in your graph. 
+**How do precipitation, burn treatment, and location impact productivity?** 
 
+Use a linear model to examine the relationships you see in your graph. Note: because the interaction of these variables is complicated you should "add" them in the model rather than "multiplying" them as in prior work.
+ 
 ```{r }
-summary(lm(total_prod ~ Precip.g.season + Location, data=total_prod_rain))
+lm_prec_burn_loc <- lm(total_prod ~ Precip.g.season+Location+Burned, data=total_prod_rain)
+summary(lm_prec_burn_loc)
+get_regression_table(lm_prec_burn_loc)
+summary(lm_prec_burn_loc)$r.squared
 ```
 
 

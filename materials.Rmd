@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 [Day 9 Slides](https://docs.google.com/presentation/d/1mN3DJQGblSwa5zBeh3zWd6slAuEpbrCcyIloznV0E0k/edit?usp=sharing)  
 [Day 10 Slides](https://docs.google.com/presentation/d/1P5VuT-YuroLoD8-GM8RLJT2TWukpg9lmOE1LRCm8MSw/edit?usp=sharing)  
 [Day 11 Slides](https://docs.google.com/presentation/d/18z7R2-OqcYATUgH_TXEYIz1oNjUG--2CjDx780d596A/edit?usp=sharing)
+[Day 13 Slides](https://docs.google.com/presentation/d/1iVKH_L-c0x88NzzCvsK4UlhLIIkSJ-YZiFfVdqv4BRI/edit?usp=sharing)
 
 [Exercise 1](day1.html)  
 [Exercise 1 data](https://tinyurl.com/yc72k45p)
@@ -28,3 +29,5 @@ knitr::opts_chunk$set(echo = TRUE)
 [Writing guidance](http://abacus.bates.edu/~ganderso/biology/resources/writing/HTWtablefigs.html#legends)
 
 [Exercise 3](day3.html)  
+
+[Exercise 3](day4.html)  
