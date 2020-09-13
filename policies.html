@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -1360,7 +1360,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1509,6 +1508,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -1521,48 +1521,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1576,6 +1537,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -1650,7 +1617,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">BIO 263 URI Fall 2019</a>
+      <a class="navbar-brand" href="index.html">BIO 263 URI Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -1662,6 +1629,9 @@ div.tocify {
 </li>
 <li>
   <a href="policies.html">Policies</a>
+</li>
+<li>
+  <a href="help.html">Assistance</a>
 </li>
 <li>
   <a href="schedule.html">Weekly schedule</a>
@@ -1693,7 +1663,7 @@ div.tocify {
 <li>Be prepared to discuss data, results, and/or assigned readings.</li>
 <li>Be kind to others. Remember that people have different backgrounds and experiences with the material. Students who learn the material faster should consider helping others (teaching is an excellent way to improve your understanding of the material).</li>
 <li>If you must come in late, please do not disrupt the class. Please ensure all cell phones, pagers, and other electronic devices are set to silent.</li>
-<li>Students are expected to come to class. Work on assignments will be done in class. If you are unable to attend due to illness, severe weather, religious holiday, personal or family emergency, or sanctioned University event please let me know as soon as possible to arrange assistance in learning the material to complete the assignment.</li>
+<li>Students are expected to come to class where possible. Work on assignments will be done in class. If you are unable to attend due to illness, severe weather, religious holiday, personal or family emergency, or sanctioned University event please let me know as soon as possible to arrange assistance in learning the material to complete the assignment.</li>
 </ul>
 </div>
 <div id="instructor-policies" class="section level2">
@@ -1720,6 +1690,15 @@ div.tocify {
 </ul></li>
 </ul>
 </div>
+<div id="covid-information" class="section level2">
+<h2>COVID Information</h2>
+<p>The University is committed to delivering its educational mission while protecting the health and safety of our students. At this uncertain time, those concerns include minimizing the potential spread of COVID-19 within our community. While the university has worked this summer to create a healthy learning environment for all, it is up to all of us to ensure our campus stays that way.</p>
+<p>As members of the URI community, students are required to comply with standards of conduct and take precautions to keep themselves and others safe. Students are required to comply with Rhode Island state laws, including the Rhode Island Executive Orders related to health and safety, ordinances, regulations, and guidance adopted by the University as it relates to public health crises, such as COVID-19.</p>
+<p>An addendum on policies and guidelines concerning your obligations during this crisis has recently been integrated into the Student Handbook. These obligations include: * Wearing of face masks by all community members when on a URI campus in the presence of others * Maintaining physical distancing of at least six feet at all times * Following state rules on the number of individuals allowed in a group gathering * Completing a daily health self-assessment also available through the Rhody Connect app before coming to campus * Submitting to COVID-19 testing as the University monitors the health of our community * Following the University’s quarantine and isolation requirements</p>
+<p>If you answer yes to any of the questions on the daily health assessment, do not come to class. YOU MUST STAY HOME/IN YOUR ROOM and notify URI Health Services via phone at 401-874-2246 immediately.</p>
+<p>If you are already on campus and start to feel ill, you need to remove yourself from the public and notify URI Health Services via phone immediately at 401-874-2246 and go home/back to your room and self-isolate while you await direction from Health Services.</p>
+<p>If you are unable to attend class, please notify me at <a href="mailto:rsschwartz@uri.edu" class="email">rsschwartz@uri.edu</a>. We will work together to ensure that course instruction and work is completed for the semester.</p>
+</div>
 
 
 
@@ -1739,6 +1718,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
