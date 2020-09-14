@@ -1,0 +1,34 @@
+---
+title: "About Class"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+```
+
+
+This course will require engagement with material, critical thinking, and the ability to communicate. The Academic Enhancement Center helps URI students succeed through three services: Academic Coaching, Subject-Based Tutoring, and The Writing Center. To learn more about any of these services, please visit http://uri.edu/aec or call 401-874-2367 to speak with reception staff. Hours are posted at http://web.uri.edu/ceps/academic-skills-center/
+
+If you, or anyone you know, is at risk of going hungry please visit the Rhody Outpost, a food pantry operated by URI. Rhody Outpost is open twice per month at St. Augustine Church at 15 Lower College Rd. For open hours see https://web.uri.edu/deanofstudents/rhody-outpost/ . Rhody Outpost protects the privacy of all visitors. Students may also visit the Jonnycake Center in Peace Dale.
+
+If you have children or family members that need care during the semester and that limits you ability to come to or participate in class, please let me know. I will work with you to complete the material at home. 
+
+URI is dedicated to providing and inclusive and supportive environment for students,
+which embraces diversity in all forms and rejects any form of workplace hostility, bullying, or harrassment. 
+Please note that all faculty members are mandatory reporters for Title IX violations, which means that
+if you report sexual harassment to me I must report that to the Title IX office.
+
+It is my personal goal to make this class inclusive and supportive of the needs of all students.
+However, you may find that your classmates (or your instructor) say things that make you uncomfortable or excluded.
+Please talk to me about these situations so we can rectify them.
+If you are comfortable doing so please share your pronouns with me and/or the class.
+You should also respect and honor other people's pronouns.
+
+Note: Credit to Dr. Rowan Martindale for the language of inclusion.
