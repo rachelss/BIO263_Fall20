@@ -20,8 +20,8 @@ library(kableExtra)
 **Email**: rsschwartz@uri.edu  
 Please note that I will do my best to respond promptly between 9-5 on weekdays.
 
-**Student Hours**: Make an appointment for any available slot at   
-Please feel free to come by without an appointment during this time. To talk with me during other times please set up a meeting by email.
+**Student Hours**: Make an appointment for any available slot on my   [calendar](https://tinyurl.com/schwartz-calendar)
+To talk with me during other times please set up a meeting by email.
 
 **Class Days / Time**: M 3-4pm Beaupre 215
 
