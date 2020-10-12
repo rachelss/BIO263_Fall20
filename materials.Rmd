@@ -19,3 +19,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Writing guidance](http://abacus.bates.edu/~ganderso/biology/resources/writing/HTWtablefigs.html#legends)
 
+[Exercise 2 Intro Slides](https://docs.google.com/presentation/d/1UTwZB3AvpDPUB4huQ2FV2PPjqQFFVX2l8sGrufTNlf4/edit?usp=sharing)  
+[Exercise 2](day2.html)  
+
