@@ -24,3 +24,5 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Exercise 3](day3.html)  
 [Exercise 3 slides](https://docs.google.com/presentation/d/1f3I8h22Tt3pKyy6JM1J22MKSsoTOhSqrsrkJF0zcjVU/edit?usp=sharing)
+
+[Exercise 4](day4.html) 
